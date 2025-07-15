@@ -20,6 +20,7 @@ async function bootstrap() {
   const configDependency = app.get(ConfigService);
   app.useGlobalInterceptors(new AuthenticationInterceptor(configDependency));
 
+  app.enableCors();
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();
