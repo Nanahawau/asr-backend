@@ -1,7 +1,7 @@
 export class CreateMediaDto {
   file: Express.Multer.File
   id: string
-  script_id: number
+  script_id: string
 }
 
 export class DemographicDto {

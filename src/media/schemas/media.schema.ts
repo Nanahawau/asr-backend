@@ -14,7 +14,7 @@ export class Media {
   userHash: string;
 
   @Prop({ required: true, index: true })
-  script_id: number;
+  script_id: string;
 }
 
 export const MediaSchema = SchemaFactory.createForClass(Media);

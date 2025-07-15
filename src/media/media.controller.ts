@@ -32,7 +32,7 @@ export class MediaController {
     )
     file: Express.Multer.File,
     @Query('id') id: string,
-    @Query('script_id') script_id: number,
+    @Query('script_id') script_id: string,
   ) {
     return this.mediaService.upload({ file, id, script_id });
   }
