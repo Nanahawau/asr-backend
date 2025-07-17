@@ -5,8 +5,9 @@ import { CreateScriptDto } from './dto/create-script.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { AuthUser } from '../auth/schemas/auth-user.schema';
 import { Model } from 'mongoose';
-import {Script} from "./schemas/script.schema";
-import {Ethnicity} from "./schemas/ethnicity.schema";
+import { Script } from './schemas/script.schema';
+import { Ethnicity } from './schemas/ethnicity.schema';
+import { UpdateScriptDto } from './dto/update-script.dto';
 
 @Injectable()
 export class DemographyService {
@@ -17,14 +18,24 @@ export class DemographyService {
 
   async createEthnicity(createEthnicityDto: CreateEthnicityDto) {
     return this.ethnicityModel.create({
-      ethnicity: createEthnicityDto.ethnicity
+      ethnicity: createEthnicityDto.ethnicity,
     });
   }
 
   async createScript(createScriptDto: CreateScriptDto) {
     return this.scriptModel.create({
-      text: createScriptDto.text
+      text: createScriptDto.text,
     });
+  }
+
+  async updateScript(updateScriptDto: UpdateScriptDto) {
+    return this.scriptModel.updateOne(
+      { _id: updateScriptDto.id },
+      {
+        text: updateScriptDto.text,
+      },
+      { upsert: true },
+    );
   }
 
   async findAllEthnicities() {
