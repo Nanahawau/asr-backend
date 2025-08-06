@@ -15,6 +15,8 @@ export class AuthUser {
   sex: string; // TODO: use enum
   @Prop()
   nativeEnglishSpeaker: boolean
+  @Prop()
+  hasConsented: boolean
 }
 
 export const AuthUserSchema = SchemaFactory.createForClass(AuthUser);

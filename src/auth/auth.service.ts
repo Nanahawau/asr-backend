@@ -7,12 +7,13 @@ import { InjectModel } from '@nestjs/mongoose';
 import { AuthUser } from './schemas/auth-user.schema';
 import { Model } from 'mongoose';
 import { CreateAuthUserDto } from './dto/create-auth-user.dto';
-import {createHash} from "crypto";
+import { createHash } from 'crypto';
+import { CreateUserConsentDto } from './dto/create-user-consent-dto';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectModel(AuthUser.name) private authUserModel: Model<AuthUser>
+    @InjectModel(AuthUser.name) private authUserModel: Model<AuthUser>,
   ) {}
 
   async create(createAuthUserDto: CreateAuthUserDto): Promise<{ id: string }> {
@@ -35,17 +36,31 @@ export class AuthService {
         id: user.id,
       };
     } catch (e) {
+      throw new InternalServerErrorException(e);
+    }
+  }
 
+  async consent(createUserConsentDto: CreateUserConsentDto) {
+    const { user_id, has_consented } = createUserConsentDto;
+    try {
+      const user = await this.authUserModel.findOne({
+        _id: user_id,
+      });
 
+      if (!user) {
+        throw new BadRequestException();
+      }
 
+      await this.authUserModel.updateOne(
+        { _id: user_id },
+        {
+          hasConsented: has_consented,
+        },
+        { upsert: true },
+      );
 
-
-
-
-
-
-
-
+    } catch (e) {
+      if (e instanceof BadRequestException) throw new BadRequestException();
       throw new InternalServerErrorException(e);
     }
   }
@@ -55,7 +70,9 @@ export class AuthService {
   }
 
   hashString(value: string) {
-    return createHash('sha256').update(value.toLowerCase().trim()).digest('hex');
+    return createHash('sha256')
+      .update(value.toLowerCase().trim())
+      .digest('hex');
   }
 
   isMatch(value: string, hash: string): boolean {

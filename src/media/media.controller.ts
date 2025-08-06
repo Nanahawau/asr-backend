@@ -21,7 +21,7 @@ export class MediaController {
     @UploadedFile(
       new ParseFilePipe({
         validators: [
-          new FileTypeValidator({ fileType: '.wav' }),
+          new FileTypeValidator({ fileType: '.webm' }),
           // new MaxFileSizeValidator({
           //   maxSize: 1000000,
           //   message: 'File is too large, Max File size is 20MB'

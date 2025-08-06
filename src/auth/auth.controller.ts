@@ -11,6 +11,7 @@ import {
 import { AuthService } from './auth.service';
 import { GoogleOauthGuard } from './guards/google-oauth.guard';
 import { CreateAuthUserDto } from './dto/create-auth-user.dto';
+import {CreateUserConsentDto} from "./dto/create-user-consent-dto";
 
 @Controller('user')
 export class AuthController {
@@ -19,6 +20,11 @@ export class AuthController {
   @Post()
   async create(@Body() createAuthUserDto: CreateAuthUserDto) {
     return this.authService.create(createAuthUserDto); //TODO: Ensure global validation is set.
+  }
+
+  @Post('/consent')
+  async consent(@Body() createUserConsent: CreateUserConsentDto) {
+    return this.authService.consent(createUserConsent); //TODO: Ensure global validation is set.
   }
   @Get('google')
   @UseGuards(GoogleOauthGuard)

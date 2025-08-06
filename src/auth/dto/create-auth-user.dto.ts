@@ -1,15 +1,17 @@
 import {
   IsBoolean,
-  IsEmail, IsEnum,
+  IsEmail,
+  IsEnum,
   IsInt,
   IsNotEmpty,
-  IsString, ValidateNested,
+  IsString,
+  ValidateNested,
 } from 'class-validator';
-import {Type} from "class-transformer";
+import { Type } from 'class-transformer';
 
 export enum Gender {
   F = 'f',
-  M = 'm'
+  M = 'm',
 }
 class DemographyData {
   @IsEnum(Gender, {
@@ -21,7 +23,7 @@ class DemographyData {
   @IsInt()
   age: number;
   @IsString()
-  ethnicity: string
+  ethnicity: string;
 }
 
 export class CreateAuthUserDto {
@@ -30,7 +32,5 @@ export class CreateAuthUserDto {
   @IsNotEmpty()
   @ValidateNested()
   @Type(() => DemographyData)
-  demographyData: DemographyData
+  demographyData: DemographyData;
 }
-
-
