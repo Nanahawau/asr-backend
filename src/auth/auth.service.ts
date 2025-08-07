@@ -16,7 +16,7 @@ export class AuthService {
     @InjectModel(AuthUser.name) private authUserModel: Model<AuthUser>,
   ) {}
 
-  async create(createAuthUserDto: CreateAuthUserDto): Promise<{ id: string }> {
+  async create(createAuthUserDto: CreateAuthUserDto): Promise<{ id: string, has_consented: boolean }> {
     try {
       const { email, demographyData } = createAuthUserDto;
       const emailHash = this.hashString(email);
@@ -34,6 +34,7 @@ export class AuthService {
 
       return {
         id: user.id,
+        has_consented: user.hasConsented || false
       };
     } catch (e) {
       throw new InternalServerErrorException(e);
